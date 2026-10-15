@@ -14,8 +14,8 @@ import {
   assertTtlSec,
   decodeCacheValue,
   encodeCacheValue,
-  type CacheStore,
-} from '../index.ts'
+} from '../kit/index.ts'
+import type { CacheStore } from '../core/index.ts'
 
 /** Client options resolved by the provider row's config. */
 export interface RedisCacheStoreOptions {

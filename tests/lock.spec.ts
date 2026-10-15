@@ -6,7 +6,7 @@
 
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { CacheStoreRegistry, MemoryCacheStore, createDistLock } from '../src/index.ts'
-import type { CacheStore } from '../src/types.ts'
+import type { CacheStore } from '../src/core/types.ts'
 
 describe('createDistLock（CacheStore 承载）', () => {
   let store: MemoryCacheStore

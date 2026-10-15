@@ -4,7 +4,19 @@
  */
 
 import type { CacheStore } from './types.ts'
-import { CacheError } from './error.ts'
+import { CacheError } from '../kit/error.ts'
+
+/**
+ * Derive the Cordis lifecycle service that one named cache-store provider
+ * row supplies. Consumers inject these keys so activation cannot race
+ * provider registration even though callers continue resolving stores
+ * through the hub registry.
+ * @param name - Store registry name, e.g. `redis`.
+ * @returns the corresponding lifecycle-only service key.
+ */
+export function cacheStoreServiceKey(name: string): string {
+  return `cache.store.${name}`
+}
 
 /**
  * Mutable name → store table. Multiple stores stay mounted side by side

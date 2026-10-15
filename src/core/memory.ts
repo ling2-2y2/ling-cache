@@ -7,8 +7,8 @@
  * @module dsh-cache/src/memory
  */
 
-import { CacheError } from './error.ts'
-import { assertTtlSec, decodeCacheValue, encodeCacheValue } from './codec.ts'
+import { CacheError } from '../kit/error.ts'
+import { assertTtlSec, decodeCacheValue, encodeCacheValue } from '../kit/codec.ts'
 import type { CacheStore } from './types.ts'
 
 /** One stored entry: the JSON document plus its absolute expiry. */

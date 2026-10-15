@@ -11,7 +11,7 @@
 
 import type { Context } from '@ling2/ling-cordis'
 import { schemastery as z } from '@ling2/ling-cordis'
-import { cacheStoreServiceKey } from '../index.ts'
+import { cacheStoreServiceKey } from '../core/index.ts'
 import { RedisCacheStore } from './store.ts'
 
 export { RedisCacheStore } from './store.ts'
