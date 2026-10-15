@@ -3,9 +3,10 @@
  * per provider row, JSON values via the hub codec, TTL/prefix/incrBy mapped
  * onto native commands (SET EX, SCAN+DEL, INCRBY[+EXPIRE], TTL). The client
  * is created with internal retries disabled; transient handshake failures
- * are retried a bounded number of times here instead, mirroring
- * dsh-rdb-mysql's pool bootstrap.
- * @module dsh-cache-redis/src/store
+ * are retried a bounded number of times here instead (a booting host
+ * compiles many plugin entries while the first Redis connection is
+ * established, and that load can starve the handshake).
+ * @module @ling2/ling-dsh-cache/cache-redis/store
  */
 
 import Redis from 'ioredis'
@@ -34,10 +35,9 @@ export interface RedisCacheStoreOptions {
 }
 
 /**
- * Handshake failures a bounded retry can survive: harness boot compiles many
- * plugin entries under tsx while the first Redis connection is established,
- * and that load can starve the handshake (same rationale as
- * dsh-rdb-mysql/src/pool.ts).
+ * Handshake failures a bounded retry can survive: a booting host compiles
+ * many plugin entries under tsx while the first Redis connection is
+ * established, and that load can starve the handshake.
  */
 const TRANSIENT_CONNECT_CODES = new Set(['ETIMEDOUT', 'ECONNRESET'])
 

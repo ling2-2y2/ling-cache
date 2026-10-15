@@ -2,7 +2,7 @@
  * Hub registry, in-memory store, and mounted-hub tests — no server
  * required. Covers TS-CA-001/002/003/004/005/006/007 for the
  * MemoryCacheStore seam (TS-CA-007 asserts 001–004 equivalence).
- * @module dsh-cache/tests/cache
+ * @module @ling2/ling-dsh-cache/tests/cache
  */
 
 import { Context, type Fiber } from '@ling2/ling-cordis'
@@ -194,7 +194,7 @@ describe('MemoryCacheStore (TS-CA-007: 001–004 semantics)', () => {
 })
 
 describe('ctx.cache hub mount', () => {
-  /** Mount the hub plus a fake provider row shaped like dsh-cache-redis. */
+  /** Mount the hub plus a fake provider row shaped like the redis provider. */
   async function mountFakeProvider(): Promise<{ ctx: Context; fiber: Fiber; store: MemoryCacheStore }> {
     const store = new MemoryCacheStore()
     const ctx = new Context()

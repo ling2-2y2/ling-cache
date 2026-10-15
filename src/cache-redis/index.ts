@@ -4,9 +4,8 @@
  * server twice under different names is the supported way to reach two
  * logical databases. The provider opens eagerly inside `apply`, so an
  * unreachable server or refused credentials fail the row at load instead of
- * the first command — no silent fallback, ever. The ioredis driver is
- * installed only in this directory (CLAUDE.md rule #10).
- * @module dsh-cache-redis
+ * the first command — no silent fallback, ever.
+ * @module @ling2/ling-dsh-cache/cache-redis
  */
 
 import type { Context } from '@ling2/ling-cordis'
@@ -23,12 +22,12 @@ export const name = 'cache-redis'
 export const inject = ['cache']
 
 /**
- * Default client-side connect budget; generous for the same boot-load
- * starvation reason as dsh-rdb-mysql's handshake budget.
+ * Default client-side connect budget; generous so a booting host's plugin
+ * compilation load cannot starve the first handshake.
  */
 export const DEFAULT_CONNECT_TIMEOUT_MS = 10_000
 
-/** Plugin configuration. Host/port/password arrive from cordis.yml (which interpolates REDIS_HOST/REDIS_PORT/REDIS_PASSWORD from the root .env via !!js). */
+/** Plugin configuration. Host/port/password arrive from the host's wiring (interpolated from its environment). */
 export interface Config {
   /** Registry name consumers resolve this store by; defaults to `redis`. */
   cache: string

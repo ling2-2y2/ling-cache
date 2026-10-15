@@ -9,7 +9,7 @@
 
 /**
  * One named cache store mounted on the hub. A provider row (e.g.
- * dsh-cache-redis) owns the connection; consumers never see connection
+ * the redis provider) owns the connection; consumers never see connection
  * mechanics, only this facade. All values are JSON documents: non-JSON
  * numbers (NaN, Infinity) coerce to `null`, and `undefined`, functions,
  * and symbols are rejected loudly at `set`/`incrBy` time.

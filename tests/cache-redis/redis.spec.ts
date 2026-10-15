@@ -5,7 +5,7 @@
  * dedicated db) to run; without it they are skipped because no Redis server
  * ships with the repository. Keys are namespaced per test and cleaned up.
  * Covers TS-CA-001/002/003/004/006/008 on the Redis provider.
- * @module dsh-cache-redis/tests/redis
+ * @module @ling2/ling-dsh-cache/tests/cache-redis/redis
  */
 
 import { Context, type Fiber } from '@ling2/ling-cordis'
@@ -17,7 +17,7 @@ import type { RedisCacheStore } from '../../src/cache-redis/store.ts'
 const url = process.env.DSH_REDIS_URL
 const hasServer = typeof url === 'string' && url.length > 0
 
-describe('dsh-cache-redis config', () => {
+describe('cache-redis config', () => {
   it('defaults cache name, port, password, db, and connect timeout', () => {
     const parse = Config as unknown as (value: unknown) => ConfigType
     expect(parse({ host: 'cache.example' })).toMatchObject({
@@ -31,7 +31,7 @@ describe('dsh-cache-redis config', () => {
   })
 })
 
-describe('dsh-cache-redis fail loud (TS-CA-008, no server needed)', () => {
+describe('cache-redis fail loud (TS-CA-008, no server needed)', () => {
   it('rejects the plugin row when Redis is unreachable, leaving the registry empty', async () => {
     const ctx = new Context()
     await ctx.plugin(Cache)
@@ -56,7 +56,7 @@ describe('dsh-cache-redis fail loud (TS-CA-008, no server needed)', () => {
   })
 })
 
-describe.skipIf(!hasServer)('dsh-cache-redis (requires DSH_REDIS_URL)', () => {
+describe.skipIf(!hasServer)('cache-redis (requires DSH_REDIS_URL)', () => {
   /** Parse DSH_REDIS_URL into provider config; called from test bodies only (skipped suites still collect describe bodies). */
   function parseConnection(): Pick<ConfigType, 'host' | 'port' | 'password' | 'db'> {
     const redisUrl = new URL(url as string)
