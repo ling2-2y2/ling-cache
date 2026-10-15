@@ -5,7 +5,7 @@
  * dedicated db) to run; without it they are skipped because no Redis server
  * ships with the repository. Keys are namespaced per test and cleaned up.
  * Covers TS-CA-001/002/003/004/006/008 on the Redis provider.
- * @module @ling2/ling-dsh-cache/tests/cache-redis/redis
+ * @module @ling2/ling-cache/tests/cache-redis/redis
  */
 
 import { Context, type Fiber } from '@ling2/ling-cordis'

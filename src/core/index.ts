@@ -2,7 +2,7 @@
  * Core domain of the cache hub: named store registry, key naming replica,
  * TTL policy constants, distributed lock, in-memory store, transport
  * contract. Every symbol here is re-exported by the package root.
- * @module @ling2/ling-dsh-cache/core
+ * @module @ling2/ling-cache/core
  */
 
 export { CacheStoreRegistry, cacheStoreServiceKey } from './registry.ts'

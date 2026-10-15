@@ -5,7 +5,7 @@
  * logical databases. The provider opens eagerly inside `apply`, so an
  * unreachable server or refused credentials fail the row at load instead of
  * the first command — no silent fallback, ever.
- * @module @ling2/ling-dsh-cache/cache-redis
+ * @module @ling2/ling-cache/cache-redis
  */
 
 import type { Context } from '@ling2/ling-cordis'

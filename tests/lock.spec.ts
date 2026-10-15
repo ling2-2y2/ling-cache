@@ -1,7 +1,7 @@
 /**
  * 分布式锁单测（MemoryCacheStore 缝，照 tests/cache.spec.ts 姿势）：并发
  * 抢锁唯一胜者、释放后再抢、重试耗尽、进程内兜底互斥、TTL 过期再抢。
- * @module @ling2/ling-dsh-cache/tests/lock
+ * @module @ling2/ling-cache/tests/lock
  */
 
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'

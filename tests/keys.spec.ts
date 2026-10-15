@@ -3,7 +3,7 @@
  * tenant-prefixed getter is asserted against the literal values read from
  * the old source (`CacheKeyUtil.java:20-256`), so any drift fails a test
  * rather than a Ling-side interop incident.
- * @module @ling2/ling-dsh-cache/tests/keys
+ * @module @ling2/ling-cache/tests/keys
  */
 
 import { describe, expect, it } from 'vitest'

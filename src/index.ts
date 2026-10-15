@@ -5,7 +5,7 @@
  * `core/types.ts`. The hub performs no IO itself. Key naming and TTL policy
  * are consumer-owned; `core/keys.ts` carries the verbatim Ling CacheKeyUtil
  * replica for wire compatibility.
- * @module @ling2/ling-dsh-cache
+ * @module @ling2/ling-cache
  */
 
 import { Context, Service } from '@ling2/ling-cordis'

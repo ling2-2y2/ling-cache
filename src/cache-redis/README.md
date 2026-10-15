@@ -1,4 +1,4 @@
-# @ling2/ling-dsh-cache/cache-redis
+# @ling2/ling-cache/cache-redis
 
 Redis 提供者：为 `ctx.cache` hub 挂载一个命名 `CacheStore`（ioredis 连接）。键名/TTL 语义由 hub（包根出口）与消费者携带，本子包只实现存储传输。
 

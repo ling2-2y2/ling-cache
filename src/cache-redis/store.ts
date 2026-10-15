@@ -6,7 +6,7 @@
  * are retried a bounded number of times here instead (a booting host
  * compiles many plugin entries while the first Redis connection is
  * established, and that load can starve the handshake).
- * @module @ling2/ling-dsh-cache/cache-redis/store
+ * @module @ling2/ling-cache/cache-redis/store
  */
 
 import Redis from 'ioredis'

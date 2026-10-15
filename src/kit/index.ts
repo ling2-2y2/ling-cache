@@ -1,7 +1,7 @@
 /**
  * Kit domain of the cache hub: dependency-free value codec and error type
  * shared by every store implementation.
- * @module @ling2/ling-dsh-cache/kit
+ * @module @ling2/ling-cache/kit
  */
 
 export { encodeCacheValue, decodeCacheValue, assertTtlSec } from './codec.ts'

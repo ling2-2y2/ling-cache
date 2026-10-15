@@ -10,7 +10,7 @@
  * non-empty tenant id is prepended directly with **no separator**
  * (`'000' + 'authorize_'` → `000authorize_`). An empty or undefined tenant
  * yields the bare literal, exactly like Ling.
- * @module @ling2/ling-dsh-cache/core/keys
+ * @module @ling2/ling-cache/core/keys
  */
 
 /**
