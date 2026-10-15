@@ -36,7 +36,7 @@ describe('cache-redis fail loud (TS-CA-008, no server needed)', () => {
     const ctx = new Context()
     await ctx.plugin(Cache)
     const failure = ctx.plugin({ name: 'cache-redis', inject: ['cache'], apply },
-      { cache: 'broken', host: '127.0.0.1', port: 1, connectTimeoutMs: 250 } satisfies ConfigType)
+      { cache: 'broken', host: '127.0.0.1', port: 1, password: '', db: 0, connectTimeoutMs: 250 } satisfies ConfigType)
     await expect(failure).rejects.toThrow()
     expect(ctx.cache.store.names()).toEqual([])
   })
@@ -46,12 +46,12 @@ describe('cache-redis fail loud (TS-CA-008, no server needed)', () => {
     await ctx.plugin(Cache)
     // a pre-registered store must not absorb the failed provider row's name
     ctx.cache.store.register('redis', {
-      async get() { return 'phantom' },
-      async set() {}, async del() {}, async delPrefix() { return 0 },
+      async get<T = unknown>(): Promise<T> { return 'phantom' as unknown as T },
+      async set() {}, async setNx() { return false }, async del() {}, async delPrefix() { return 0 },
       async incrBy() { return 0 }, async keys() { return [] }, async ttl() { return -2 },
     })
     const failure = ctx.plugin({ name: 'cache-redis', inject: ['cache'], apply },
-      { cache: 'redis', host: '127.0.0.1', port: 1, connectTimeoutMs: 250 } satisfies ConfigType)
+      { cache: 'redis', host: '127.0.0.1', port: 1, password: '', db: 0, connectTimeoutMs: 250 } satisfies ConfigType)
     await expect(failure).rejects.toThrow()
   })
 })
