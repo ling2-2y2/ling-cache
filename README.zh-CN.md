@@ -63,6 +63,14 @@ pnpm check:dts     # 外部消费者视角 d.ts 冒烟（符号/default/Context.
 pnpm smoke         # 可跑示例：examples/memory-hub
 ```
 
+## 环境变量
+
+| 变量 | 消费方 | 示例 |
+|---|---|---|
+| `DSH_REDIS_URL` | `cache-redis` 集成测试（门控；缺省=skip 非失败） | `redis://:password@192.168.74.129:6379/15` |
+
+门控套件务必指向**专用测试库**（示例的 db 15）：测试键按用例随机前缀并在用例后清理，但绝不要指向共享业务实例。
+
 ## 许可
 
 [MIT](./LICENSE)

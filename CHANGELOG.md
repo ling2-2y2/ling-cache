@@ -2,6 +2,12 @@
 
 本项目遵循 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/)，版本语义遵循 [SemVer](https://semver.org/lang/zh-CN/)。
 
+## [1.0.1] - 2026-10-15
+
+### 文档
+
+- README 双语补「环境变量」节：`DSH_REDIS_URL` 集成测试门控示例（`redis://:password@host:6379/15`）与专用测试库纪律。
+
 ## [1.0.0] - 2026-10-15
 
 ### 首发内容

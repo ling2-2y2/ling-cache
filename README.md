@@ -63,6 +63,14 @@ pnpm check:dts     # external-consumer d.ts smoke (symbols, default export, Cont
 pnpm smoke         # runnable example: examples/memory-hub
 ```
 
+## Environment variables
+
+| Variable | Used by | Example |
+|---|---|---|
+| `DSH_REDIS_URL` | `cache-redis` integration tests (gated; unset = skip, not fail) | `redis://:password@192.168.74.129:6379/15` |
+
+Always point gated suites at a **dedicated test database** (db 15 in the example): test keys are namespaced per case and cleaned up, but never aim them at a shared business instance.
+
 ## License
 
 [MIT](./LICENSE)
