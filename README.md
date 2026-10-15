@@ -1,24 +1,68 @@
-# dsh-cache
+# ling-cache
 
-缓存公共层（Service Definition）：`ctx.cache` hub + 命名缓存注册表 + TTL 语义 + Ling `CacheKeyUtil` 键名/TTL 1:1 复刻。供 bsh-scratch-plugin 内其他插件（satoken、rbac……）共享，自身不做任何 IO——连接与驱动由提供者（如 `dsh-cache-redis`）拥有。
+A **cache hub** for cordis-based TypeScript hosts: mount one or many named cache stores on `ctx.cache`, resolve them by name, and code against one transport contract — with an in-memory implementation, a distributed lock, and an ioredis-backed Redis provider in the box. Key naming ships as a verbatim replica of Ling's `CacheKeyUtil` for cross-system wire compatibility.
 
-## 形态
+> 简体中文文档见 [README.zh-CN.md](./README.zh-CN.md)。
 
-- `ctx.cache.store` — 命名注册表（`register(name, store)` 返回 disposer；重名 throw；`get(name)` 未知名 throw 并列出现有名）。多存储并存，哪个消费者用哪个存储是消费者配置。
-- `cacheStoreServiceKey(name)` — 防激活竞态的生命周期 key。提供者 `ctx.provide` 该 key；消费者 `[Service.init]` 里 `ctx.inject([key], …)` 建栅栏。
-- `CacheStore` 接口 — `get/set(key,val,ttlSec?)/setNx(key,val,ttlSec?)/del/delPrefix(prefix)/incrBy(key,delta,ttlSec?)/keys(prefix)/ttl(key)`；值 JSON 序列化（非 JSON 值 fail loud）；TTL 秒级、缺省持久；`ttl` 答复 Redis 语义（-1 持久 / -2 缺失）；`incrBy` 不带 TTL 时保留现有效期（Redis INCRBY 语义）；`setNx` 仅在键缺席时写入并返回是否抢到（Redis `SET NX [EX]`，分布式锁/去重集的原子原语；Ling `redisUtil.exists`+`insert` 检查-写入对的分布式等价物——TTL 归消费者传）。
-- `MemoryCacheStore` — 内存假实现（测试接缝，design §2.1；懒过期、无后台定时器、JSON 往返与 Redis provider 等价），供消费者单测注入。
-- `src/keys.ts` — Ling `CacheKeyUtil`（`ez2-ling-common-tool/.../CacheKeyUtil.java:15-257`）逐字复刻：26 个键常量 + 18 个租户前缀 getter（租户作显式参数，拼接规则不变：非空租户直接前置、无分隔符）+ `userAuthorizeKey`（`{tenant}authorize_{moduleId}_{userId}`，AuthorizeServiceImpl.java:809 同式）+ TTL 锚点（authorize 300s、permission map 86400s、RedisUtil CAHCE* 时长族）。
+## Features
 
-## 约定
+- **Hub, not IO** — `ctx.cache` is a named store registry (`ctx.cache.store.get(name)`); the hub owns no connections. Providers mount one store per row and own their drivers.
+- **One store contract** — `CacheStore`: `get` / `set` / `setNx` / `incrBy` / `del` / `delPrefix` / `keys` / `ttl`, JSON values with loud rejection of non-JSON numbers and functions.
+- **Memory store** — drop-in `MemoryCacheStore` for tests and single-instance hosts.
+- **Redis provider** — `cache-redis`: one ioredis connection per store, eager open that fails loud, bounded retries for transient handshakes, effect-reversible registration (unregister before disconnect).
+- **Distributed lock** — `createDistLock`: `setNx`-based atomic acquire with bounded retries and a TTL deadlock guard; inject `resolveStore` for multi-instance mutual exclusion or `undefined` for in-process fallback.
+- **Ling key replica** — `CACHE_KEYS` + key builders + TTL constants copied verbatim from Ling's `CacheKeyUtil`, so cache keys stay byte-compatible across systems. Never change these values.
 
-- 键名/有效期策略归消费者（`keys.ts` 只是 Ling 复刻的权威携带者）；hub 只标准化存储传输。
-- `keys(prefix)` 是纯前缀扫描；Ling `findKeysContaining` 对 `idgenerator_`/锁键的排除属运维策略，归消费者（CacheManage 面）。
-- Ling `RedisUtil.insert(key, obj)` 无 TTL 时隐式 8h 过期的行为**不**复刻——design.md §2.1 明确缺省持久。
-
-## 测试
+## Install
 
 ```sh
-cd scratch-plugin/bsh-scratch-plugin/dsh-cache
-npx vitest run   # 纯内存，无需服务器
+npm install @ling2/ling-cache
+# peer: @ling2/ling-cordis ^2.0.0
 ```
+
+## Quick start
+
+```ts
+import { MemoryCacheStore, cacheKeyWithTenant, CACHE_KEYS } from '@ling2/ling-cache'
+
+const memory = new MemoryCacheStore()
+await memory.set(cacheKeyWithTenant('000000', CACHE_KEYS.getLoginToken('u1')), { token: '...' }, 300)
+const session = await memory.get<{ token: string }>(cacheKeyWithTenant('000000', CACHE_KEYS.getLoginToken('u1')))
+```
+
+Mount the hub service in a cordis app, then register stores:
+
+```ts
+import { Cache } from '@ling2/ling-cache'          // default export, too
+
+// host wiring: ctx.plugin(Cache) provides ctx.cache
+ctx.cache.store.register('memory', new MemoryCacheStore())
+const store = ctx.cache.store.get('memory')
+```
+
+The Redis provider mounts through its cordis plugin (`cache-redis`): one config row = one named store with its own connection.
+
+## Structure
+
+```text
+src/
+├── index.ts        # aggregate root (hub service + re-exports; default = Cache)
+├── core/           # registry, Ling key replica, lock, memory store, CacheStore contract
+├── kit/            # dependency-free JSON codec + CacheError
+└── cache-redis/    # ioredis provider (cordis plugin)
+```
+
+## Development
+
+```sh
+pnpm install
+pnpm typecheck     # tsc --noEmit
+pnpm test          # vitest (redis integration gated by DSH_REDIS_URL; no server = skip, not fail)
+pnpm build         # tsdown (js) + tsc d.ts module tree -> dist/
+pnpm check:dts     # external-consumer d.ts smoke (symbols, default export, Context.cache augmentation)
+pnpm smoke         # runnable example: examples/memory-hub
+```
+
+## License
+
+[MIT](./LICENSE)
