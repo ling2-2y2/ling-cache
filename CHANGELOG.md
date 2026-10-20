@@ -2,6 +2,12 @@
 
 本项目遵循 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/)，版本语义遵循 [SemVer](https://semver.org/lang/zh-CN/)。
 
+## [1.1.0] - 2026-10-21
+
+### 新增
+
+- **键式延迟任务队列**（`core/queue.ts`，分布式锁的姊妹原语）：消息=键（`taskq:{queue}:item:{id}`）、认领=`setNx` 原子占位（租约 TTL 到期自动失守，持有方崩溃后可重认领）、失败重试=重写消息 `nextRunAt`（`TASK_QUEUE_MAX_RETRY`(3) + 指数退避 `8s×2^(n-1)`+抖动）、完成=删除消息键、重试耗尽=落 `taskq:{queue}:dead:` 死信键。`enqueueQueueTask` / `pollQueueOnce`（每拍至多消化一条，多实例靠认领互斥）；store 缺席=进程内 Map 回落（`resetMemoryQueue` 测试隔离钩 + `memoryDeadLetters` 排障读取）。
+
 ## [1.0.1] - 2026-10-15
 
 ### 文档

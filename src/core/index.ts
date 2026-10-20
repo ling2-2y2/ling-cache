@@ -39,5 +39,10 @@ export {
 } from './keys.ts'
 export { createDistLock } from './lock.ts'
 export type { DistLockHandle, DistLockDeps } from './lock.ts'
+export {
+  enqueueQueueTask, pollQueueOnce, resetMemoryQueue, memoryDeadLetters, taskQueueBackoffMs,
+  TASK_QUEUE_POLL_MS, TASK_QUEUE_MAX_RETRY, TASK_QUEUE_LEASE_SEC, TASK_QUEUE_BACKOFF_BASE_MS,
+} from './queue.ts'
+export type { TaskQueueStore, QueueMessage, TaskQueuePollOptions } from './queue.ts'
 export { MemoryCacheStore } from './memory.ts'
 export type { CacheStore } from './types.ts'
