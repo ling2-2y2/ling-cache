@@ -157,7 +157,7 @@ export async function withRenewableLock<T>(
   }, renewIntervalMs)
   timer.unref?.()
 
-  let result: T
+  let result: T | undefined
   let fnError: unknown
   try {
     result = await fn({ signal: ownership.signal })
