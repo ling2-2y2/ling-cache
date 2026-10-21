@@ -15,6 +15,12 @@ import { RedisCacheStore } from './store.ts'
 
 export { RedisCacheStore } from './store.ts'
 export type { RedisCacheStoreOptions } from './store.ts'
+export { createRawRedisCommands } from './raw-commands.ts'
+export type { RedisRawCommands } from './raw-commands.ts'
+export {
+  LockOwnershipLostError, TOKEN_LOCK_RELEASE_TIMEOUT_MS,
+  acquireLock, newLockToken, releaseLock, renewLock, tryAcquireLock, withRenewableLock,
+} from './token-lock.ts'
 
 /** Cordis plugin name. */
 export const name = 'cache-redis'

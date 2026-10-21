@@ -76,6 +76,15 @@ export class RedisCacheStore implements CacheStore {
   }
 
   /**
+   * The established ioredis client, for facade adapters that must reach past
+   * the JSON codec (raw command face in `raw-commands.ts`). Same connection
+   * guard as every command: an unopened store throws `store-closed`.
+   */
+  rawConnection(): import('ioredis').default {
+    return this.conn() as unknown as import('ioredis').default
+  }
+
+  /**
    * Open the connection and verify it reaches `ready`, so an unreachable
    * server or refused credentials reject the opener (fail loud at plugin
    * load) instead of the first command.

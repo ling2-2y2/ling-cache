@@ -12,6 +12,7 @@
 - **Redis 提供者** —— `cache-redis`：一个存储一条 ioredis 连接；eager open fails loud（起服即暴露连接问题）；瞬态握手失败有界重试；注册即 effect 可逆（先除名后断连）。
 - **分布式锁** —— `createDistLock`：`setNx` 原子占位 + 有界重试 + TTL 死锁兜底；`resolveStore` 缝注入——传存储=多实例互斥，传 `undefined`=进程内兜底。
 - **延迟任务队列** —— `enqueueQueueTask` / `pollQueueOnce`：消息=键的持久延迟队列，跑在 `CacheStore` 门面上——`setNx` 认领租约（持有方崩溃后租约到期可重认领）+ 封顶指数退避重试 + 死信键；store 传 `undefined`=进程内回落。
+- **令牌持有可续期锁** —— `cache-redis/token-lock.ts` 的 `withRenewableLock`：属主令牌 + 比较删除/比较续期两段 Lua（释放与续期只认属主）、获取抖动退避、所有权丢失显式上报；附裸命令窄面（`raw-commands.ts`），供需要在存储文本内匹配字段的比较改写型原语使用。
 - **Ling 键名复刻** —— `CACHE_KEYS` + 键构造器 + TTL 常量逐字取自 Ling `CacheKeyUtil`，缓存键跨系统字节一致。**禁止改值**。
 
 ## 安装

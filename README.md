@@ -12,6 +12,7 @@ A **cache hub** for cordis-based TypeScript hosts: mount one or many named cache
 - **Redis provider** — `cache-redis`: one ioredis connection per store, eager open that fails loud, bounded retries for transient handshakes, effect-reversible registration (unregister before disconnect).
 - **Distributed lock** — `createDistLock`: `setNx`-based atomic acquire with bounded retries and a TTL deadlock guard; inject `resolveStore` for multi-instance mutual exclusion or `undefined` for in-process fallback.
 - **Delay task queue** — `enqueueQueueTask` / `pollQueueOnce`: message-as-key durable queue over `CacheStore` — `setNx` claim lease (expired lease = reclaimable after a crashed worker), capped exponential-backoff retries, dead-letter keys for exhausted tasks; `undefined` store falls back to in-process.
+- **Token-owned renewable lock** — `withRenewableLock` over `cache-redis/token-lock.ts`: owner token + compare-delete/compare-renew Lua (release and renewal honor ownership), jittered acquire backoff, ownership-lost surfaced loudly; plus the raw command face (`raw-commands.ts`) for compare-and-set primitives that must match fields inside stored text.
 - **Ling key replica** — `CACHE_KEYS` + key builders + TTL constants copied verbatim from Ling's `CacheKeyUtil`, so cache keys stay byte-compatible across systems. Never change these values.
 
 ## Install

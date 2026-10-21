@@ -2,6 +2,13 @@
 
 本项目遵循 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/)，版本语义遵循 [SemVer](https://semver.org/lang/zh-CN/)。
 
+## [1.2.0] - 2026-10-21
+
+### 新增
+
+- **令牌持有可续期分布式锁**（`cache-redis/token-lock.ts`）：属主令牌（16 字节 hex）+ 比较删除/比较续期两段 Lua——释放与续期只认仍归本令牌的锁；获取等待 25~75ms 随机抖动退避；`withRenewableLock` 运行期周期续期，续期失败即中止所有权信号并聚合入账，释放未删且续期无错=所有权丢失显式上报。`core/lock.ts`（setNx+TTL+del 简式）的长临界区强化姊妹件：持有方可能超过租期、或释放必须查属主时用本件。
+- **裸命令窄面**（`cache-redis/raw-commands.ts`）：绕过 hub JSON 信封的原生命令子集（GET/SET NX/PX/DEL/EXISTS/PEXPIRE/HGETALL/EVAL/SCAN）——比较改写型原语（令牌锁、Lua 守护文档）需要在存储文本内匹配字段名，值必须逐字存储。`RedisCacheStore.rawConnection()` 暴露既有连接供适配（同一连接两面）。
+
 ## [1.1.0] - 2026-10-21
 
 ### 新增
