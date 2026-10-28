@@ -19,7 +19,7 @@
 
 ```sh
 npm install @ling2/ling-cache
-# peer: @ling2/ling-cordis ^2.0.0
+# peer: @ling2/ling-coris ^2.0.0
 ```
 
 ## 快速上手

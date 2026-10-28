@@ -8,7 +8,7 @@
  * @module @ling2/ling-cache/tests/cache-redis/redis
  */
 
-import { Context, type Fiber } from '@ling2/ling-cordis'
+import { Context, type Fiber } from '@ling2/ling-coris'
 import { beforeEach, describe, expect, it } from 'vitest'
 import Cache, { type CacheStore } from '../../src/index.ts'
 import { apply, Config, DEFAULT_CONNECT_TIMEOUT_MS, type Config as ConfigType } from '../../src/cache-redis/index.ts'

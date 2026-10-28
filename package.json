@@ -1,6 +1,6 @@
 {
   "name": "@ling2/ling-cache",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Cache hub for cordis-based hosts: named cache-store registry with TTL semantics, the verbatim Ling CacheKeyUtil key replica, an in-memory store, a distributed lock, a key-based delay task queue, a token-owned renewable Redis lock, a raw command face, and an ioredis-backed provider.",
   "type": "module",
   "license": "MIT",
@@ -54,13 +54,13 @@
     "prepublishOnly": "pnpm typecheck && pnpm test && pnpm build"
   },
   "peerDependencies": {
-    "@ling2/ling-cordis": "^2.0.0"
+    "@ling2/ling-coris": "*"
   },
   "dependencies": {
     "ioredis": "^5.4.1"
   },
   "devDependencies": {
-    "@ling2/ling-cordis": "^2.0.0",
+    "@ling2/ling-coris": "*",
     "@types/node": "^24.10.1",
     "tsdown": "^0.22.14",
     "tsx": "^4.22.4",

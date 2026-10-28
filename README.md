@@ -19,7 +19,7 @@ A **cache hub** for cordis-based TypeScript hosts: mount one or many named cache
 
 ```sh
 npm install @ling2/ling-cache
-# peer: @ling2/ling-cordis ^2.0.0
+# peer: @ling2/ling-coris ^2.0.0
 ```
 
 ## Quick start

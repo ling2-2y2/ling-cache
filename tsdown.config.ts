@@ -16,6 +16,6 @@ export default defineConfig({
   dts: false,
   sourcemap: true,
   clean: true,
-  external: ['ioredis', '@ling2/ling-cordis'],
+  external: ['ioredis', '@ling2/ling-coris'],
   outExtensions: () => ({ js: '.js' }),
 })

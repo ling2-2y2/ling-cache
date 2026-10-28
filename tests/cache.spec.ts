@@ -5,7 +5,7 @@
  * @module @ling2/ling-cache/tests/cache
  */
 
-import { Context, type Fiber } from '@ling2/ling-cordis'
+import { Context, type Fiber } from '@ling2/ling-coris'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import Cache, { CacheError, MemoryCacheStore, cacheStoreServiceKey } from '../src/index.ts'
 import { CacheStoreRegistry } from '../src/core/registry.ts'

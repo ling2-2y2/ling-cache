@@ -8,13 +8,13 @@
  * @module @ling2/ling-cache
  */
 
-import { Context, Service } from '@ling2/ling-cordis'
+import { Context, Service } from '@ling2/ling-coris'
 import { CacheStoreRegistry } from './core/index.ts'
 
 export * from './core/index.ts'
 export * from './kit/index.ts'
 
-declare module '@ling2/ling-cordis' {
+declare module '@ling2/ling-coris' {
   interface Context {
     cache: Cache
   }
